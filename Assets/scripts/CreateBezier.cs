@@ -5,26 +5,26 @@ using UnityEngine;
 public class CreateBezier : MonoBehaviour
 {
     public Vector3[] controlPoints;
-    private Vector3[] bezierPoints;
-
     public int accuracy;
 
-    // Use this for initialization
-    void Start()
-    {
-        Debug.DrawLine(this.controlPoints[0], this.controlPoints[1], Color.red, 100000f, false);
-        Debug.DrawLine(this.controlPoints[2], this.controlPoints[1], Color.red, 100000f, false);
-        Debug.DrawLine(this.controlPoints[2], this.controlPoints[3], Color.red, 100000f, false);
-        Debug.DrawLine(this.controlPoints[4], this.controlPoints[3], Color.red, 100000f, false);
-        Testing();
-    }
+    private Vector3[] bezierPoints;
 
-    private Vector3[] CreateBezierCurve(Vector3[] controlPoints)
+    public Vector3[] CreateBezierCurve(Vector3[] controlPoints)
     {
         Vector3[][] setOfVectorSets = new Vector3[controlPoints.Length - 1][];
         for (int i = 0; i < controlPoints.Length - 1; i++)
         {
             setOfVectorSets[i] = CreateVectorsFromControlPoints(controlPoints[i], controlPoints[i + 1]);
+        }
+        return CreateBezierVectors(setOfVectorSets);
+    }
+    
+    public Vector3[] CreateBezierCurve()
+    {
+        Vector3[][] setOfVectorSets = new Vector3[this.controlPoints.Length - 1][];
+        for (int i = 0; i < this.controlPoints.Length - 1; i++)
+        {
+            setOfVectorSets[i] = CreateVectorsFromControlPoints(this.controlPoints[i], this.controlPoints[i + 1]);
         }
         return CreateBezierVectors(setOfVectorSets);
     }
@@ -82,16 +82,19 @@ public class CreateBezier : MonoBehaviour
         );
     }
 
-    private void Testing()
-    {
-        DrawDebugLineForVectors(CreateBezierCurve(this.controlPoints));
-    }
-
     private void DrawDebugLineForVectors(Vector3[] vectors)
     {
         for (int i = 0; i < vectors.Length - 1; i++)
         {
             Debug.DrawLine(vectors[i], vectors[i + 1], Color.red, 100000, true);
         }
+    }
+
+    public Vector3[] GetBezierPoints() {
+        return this.bezierPoints;
+    }
+
+    public void SetAccuracy(int accuracy){
+        this.accuracy = accuracy;
     }
 }
